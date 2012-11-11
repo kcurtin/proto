@@ -20,6 +20,14 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+Proto::Scraper.new(url)
+Proto::Tweet.new(user_name)
+Proto::Wiki(url)
+
+@users = Proto::User.new()
+@posts = Proto::Post.new()
+
+
 ## Contributing
 
 1. Fork it
