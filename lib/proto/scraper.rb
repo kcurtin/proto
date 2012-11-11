@@ -9,8 +9,10 @@ module Proto
       @url = url
     end
 
-    def go!(name='Proto::Type', attributes)
-      name = OpenStruct.new
+    def go!(name='Type', attributes)
+      new_class = Class.new(OpenStruct)
+      Proto.const_set(name, new_class)
+      Proto.const_get(name).new(attributes)
     end
   end
 end
