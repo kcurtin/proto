@@ -1,5 +1,5 @@
 require "proto/version"
 
 module Proto
-  # Your code goes here...
+  autoload :Scraper, 'proto/scraper'
 end
