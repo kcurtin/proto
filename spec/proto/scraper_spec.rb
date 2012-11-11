@@ -1,13 +1,23 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Proto::Scraper do
-  it "accepts a url as arguments" do  
-    scrape = Proto::Scraper.new('some_url')
-    scrape.url.should == 'some_url'
+  it "sets its doc attr to a nokogiri doc based on url" do
+    expect { 
+      Proto::Scraper.new('blah_url')
+    }.to raise_error(Errno::ENOENT)
   end
-
+ 
+ # Nokogiri::HTML.any_instance_of.returns
+ 
   context ".go!" do
-    let(:scrape) { Proto::Scraper.new('some_url') }
+    before(:each) do
+      Nokogiri::HTML.stub!(:open).and_return("doc")
+      Nokogiri::HTML::Document.stub!(:parse)
+      Nokogiri::HTML::Document.should_receive(:parse).and_return('str')
+    end
+
+    let(:scrape) { Proto::Scraper.new('http://example.com') }
+
     it "the default class name is 'Proto::Type'" do
       our_obj = scrape.go!({})
       our_obj.class.to_s.should == 'Proto::Type'

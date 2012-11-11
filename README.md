@@ -20,9 +20,9 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
-Proto::Scraper.new(url)
-Proto::Tweet.new(user_name)
-Proto::Wiki(url)
+@data   = Proto::Scraper.new(url)
+@wikis  = Proto::Wiki(url)
+@tweets = Proto::Tweet.new(user_name)
 
 @users = Proto::User.new()
 @posts = Proto::Post.new()
