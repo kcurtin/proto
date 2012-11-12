@@ -1,25 +1,21 @@
 module Proto
   class Scraper
-    require 'open-uri'
-    require 'ostruct'
-    require 'nokogiri'
-
     attr_accessor :doc
 
     def initialize(url)
       @doc = Nokogiri::HTML(open(url))
     end
 
-    def go!(name='Type', attributes)
+    def fetch_and_create!(name='Type', args)
+      attributes = scrape_attribute_data(args)
       create_return_objects(name, attributes)
     end
 
   private
 
     def scrape_attribute_data(attributes)
-      attribute_hash = attributes.each_with_object({}) do |(key, selector), attrs|
-        var_name, option = key.to_s.split("_")
-        attrs[var_name]  = doc.css(selector).send(option).strip
+      attributes.each_with_object({}) do |(key, selector), attrs|
+        attrs[key] = doc.css(selector).text
       end
     end
 
