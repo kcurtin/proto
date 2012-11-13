@@ -7,7 +7,7 @@ def load_sample(filename)
   File.read("#{File.dirname(__FILE__)}/sample_pages/#{filename}")
 end
 
-def sample_atom_feed
+def sample_twitter_feed
   load_sample("twitter.html")
 end
 

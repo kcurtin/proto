@@ -21,6 +21,7 @@ Or install it yourself as:
 TODO: Write usage instructions here
 
 @data   = Proto::Scraper.new(url)
+
 @wikis  = Proto::Wiki(url)
 @tweets = Proto::Tweet.new(user_name)
 

@@ -5,7 +5,7 @@ describe Proto::Scraper do
     Nokogiri::HTML.stub!(:open).and_return("doc")
     Nokogiri::HTML::Document.stub!(:parse)
     @scrape = Proto::Scraper.new('http://example.com')
-    @scrape.stub_chain(:doc, :css, :text).and_return('STUBBED OUT')
+    @scrape.stub_chain(:doc, :css, :each).and_return('STUBBED OUT')
   end
   
   it "sets its doc attr to a nokogiri doc based on url" do
@@ -37,20 +37,21 @@ describe Proto::Scraper do
     context ".create_return_objects" do
       it "accepts a custom class name" do
         our_obj = @scrape.send(:create_return_objects, 'Kevin', {})
-        our_obj.class.to_s.should == 'Proto::Kevin'
+        our_obj.first.class.to_s.should == 'Proto::Kevin'
       end
 
       it "accepts a hash and name and sets custom attrs" do
-        our_obj = @scrape.send(:create_return_objects, 'Test', {:name => 'Kevin', :title => "Title"})
-        our_obj.name.should == 'Kevin'
-        our_obj.title.should == 'Title'
+        our_obj = @scrape.send(:create_return_objects, 'Test', [{:name => 'Kevin'},{:title => "Title"}])
+        our_obj.first.name.should == 'Kevin'
+        our_obj.last.title.should == 'Title'
+        our_obj.length.should == 2
       end
     end
 
     context ".scrape_attribute_data" do
       it "returns a hash of stuff" do
         rh = @scrape.send(:scrape_attribute_data, {:title => "h2 a"})
-        rh.should == {:title => 'STUBBED OUT'}
+        rh.should == [{:title => 'STUBBED OUT'}]
       end
     end
   end
