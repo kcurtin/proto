@@ -16,8 +16,8 @@ module Proto
     #[{:title => "the title", :name => "the name"}, {:title => 'something', :name => 'name2'}]
     def scrape_attribute_data(attributes)
       array_content = []
-      array_name = []
-      array_date = []
+      array_name    = []
+      array_date    = []
 
       attributes.each_with_index do |(key, selector), index|
         doc.css(selector).slice(1..10).each do |el|
@@ -27,7 +27,7 @@ module Proto
         end
       end
       master_array = []
-      0.upto(array_name.length) do |n|
+      0.upto(array_name.length - 1) do |n|
         master_array << {attributes.keys[0] => array_name[n], attributes.keys[1] => array_content[n], attributes.keys[2] => array_date[n]}
       end
       master_array
@@ -36,7 +36,7 @@ module Proto
     def create_return_objects(name, attributes)
       new_class = Class.new(OpenStruct)
       Proto.const_set(name, new_class)
-      puts attributes.map { |hash| Proto.const_get(name).new(hash) }
+      attributes.map { |hash| Proto.const_get(name).new(hash) }
     end
   end
 end
