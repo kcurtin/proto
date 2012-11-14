@@ -2,10 +2,19 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Proto::Scraper do
   before(:each) do
-    Nokogiri::HTML.stub!(:open).and_return("doc")
-    Nokogiri::HTML::Document.stub!(:parse)
-    @scrape = Proto::Scraper.new('http://example.com')
-    @scrape.stub_chain(:doc, :css, :each).and_return('STUBBED OUT')
+    # Nokogiri::HTML.stub!(:open).and_return("doc")
+    # Nokogiri::HTML::Document.stub!(:parse)
+    # @scrape = Proto::Scraper.new('http://example.com')
+    # @scrape.stub_chain(:doc, :css, :each).and_return('STUBBED OUT')
+  end
+
+  it 'returns my objects!' do
+    obj = Proto::Scraper.new('https://twitter.com/kcurtin')
+    obj_collection = obj.fetch_and_create!('Tweets', { :name => 'strong.fullname', 
+                                            :content => 'p.js-tweet-text', :created_at => 'small.time' })
+    obj_collection.length.should == 11
+    obj_collection.first.class.should == 'Proto::Tweet'
+    obj_collection.first.name.should == 'Kevin Curtin'
   end
   
   it "sets its doc attr to a nokogiri doc based on url" do

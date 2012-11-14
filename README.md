@@ -1,6 +1,6 @@
 # Proto
 
-TODO: Write a gem description
+Proto lets you create highly malleable, disposable value objects. You create a Proto::Scraper object with a URL. You can then pass it the name of the class you want back and a hash with the attribute and selectors so that it knows which data to scrape for you. The objects you get back are OpenStructs and are very flexible.
 
 ## Installation
 
@@ -18,16 +18,18 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
 
-@data   = Proto::Scraper.new(url)
+scraper = Proto::Scraper.new('http://twitter.com/kcurtin')
+@tweets = scraper.fetch_and_create!('Tweets', { :name => 'strong.fullname', 
+                                                :content => 'p.js-tweet-text', 
+                                                :created_at => 'small.time' } )
 
-@wikis  = Proto::Wiki(url)
-@tweets = Proto::Tweet.new(user_name)
+@tweets.inspect
+#<Proto::Tweets name="Kevin Curtin", content="@cawebs06 just a tad over my head... You guys are smart :)", created_at="11h">
+#<Proto::Tweets name="Kevin Curtin", content="@garybernhardt awesome, thanks. any plans to be in nyc soon? @FlatironSchool would love to have you stop by. we love DAS", created_at="12h">...
 
-@users = Proto::User.new()
-@posts = Proto::Post.new()
-
+```
 
 ## Contributing
 
