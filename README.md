@@ -23,8 +23,8 @@ Or install it yourself as:
 proto = Proto::Scraper.new('http://twitter.com/kcurtin')
 
 @tweets = proto.fetch_and_create!('Tweet', {:name => 'strong.fullname', 
-                                               :content => 'p.js-tweet-text', 
-                                               :created_at => 'small.time'})
+                                            :content => 'p.js-tweet-text', 
+                                            :created_at => 'small.time'})
 
 #by default, Proto::Scraper only returns 10 objects
  
