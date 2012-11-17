@@ -13,24 +13,23 @@ module Proto
     end
 
   private
-    #[{:title => "the title", :name => "the name"}, {:title => 'something', :name => 'name2'}]
     def scrape_attribute_data(attributes)
-      array_content = []
-      array_name    = []
-      array_date    = []
+      collection = Array.new(attributes.length, [])
+      final_array = []
+      keys = attributes.keys
 
       attributes.each_with_index do |(key, selector), index|
-        doc.css(selector).slice(1..10).each do |el|
-          array_content << el.text.strip if key == :content
-          array_name << el.text.strip if key == :name
-          array_date << el.text.strip if key == :created_at
+        collection[index] = doc.css(selector).slice(1..10).map { |el| el.text.strip }
+      end
+
+      collection.transpose.each do |data|
+        hash = {}
+        data.each_with_index do |value, index|
+          hash[keys[index]] = value
         end
+        final_array << hash
       end
-      master_array = []
-      0.upto(array_name.length - 1) do |n|
-        master_array << {attributes.keys[0] => array_name[n], attributes.keys[1] => array_content[n], attributes.keys[2] => array_date[n]}
-      end
-      master_array
+      final_array
     end
 
     def create_return_objects(name, attributes)
