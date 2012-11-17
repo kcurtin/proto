@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["kevincurtin88@gmail.com"]
   gem.description   = %q{Highly malleable, disposable value objects}
   gem.summary       = %q{Highly malleable, disposable value objects}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/kcurtin/proto"
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency "nokogiri"
