@@ -14,22 +14,15 @@ module Proto
 
   private
     def scrape_attribute_data(attributes)
-      collection = Array.new(attributes.length, [])
-      final_array = []
-      keys = attributes.keys
+      length_of_scrape = @doc.css(attributes.first[1]).count
 
-      attributes.each_with_index do |(key, selector), index|
-        collection[index] = doc.css(selector).slice(1..10).map { |el| el.text.strip }
-      end
-
-      collection.transpose.each do |data|
-        hash = {}
-        data.each_with_index do |value, index|
-          hash[keys[index]] = value
+      final_array = length_of_scrape.times.map do |i|
+        attributes.inject(Hash.new) do |hash, (k, v)|
+          hash.merge(k => @doc.css(v)[i].text.strip) if doc.css(v)[i]
         end
-        final_array << hash
       end
-      final_array
+
+      final_array.compact
     end
 
     def create_return_objects(name, attributes)
