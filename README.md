@@ -4,7 +4,7 @@ Proto is a nokogiri wrapper that uses scraping patterns to return value objects 
 
 It is the evolution of [another project](https://github.com/kcurtin/scrape_source).
 
-Proto is meant to be lightweight and flexible, the objects you get back inherit from OpenStruct.  New methods can be dynamically added to the objects, you won't ever get method_missing errors, and you can access the data in a bunch of different ways. Check out the documentation for OpenStruct, for more info: [OpenStruct](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html)
+Proto is meant to be lightweight and flexible, the objects you get back inherit from OpenStruct.  New methods can be dynamically added to the objects, you won't ever get method_missing errors, and you can access the data in a bunch of different ways. Check out the documentation for more info: [OpenStruct](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html)
 
 ## Usage
 
@@ -33,11 +33,12 @@ The keys correspond with the getter/setter methods that will be available on the
 ```.fetch``` returns an array of objects that contain your data:
 ```ruby 
 tweets.inspect
-[#<Proto::Tweet name="Kevin Curtin", content="@cawebs06 just a tad over my head... You guys are smart :)", created_at="11h">,
- #<Proto::Tweet name="Kevin Curtin", content="@garybernhardt awesome, thanks. any plans to be in nyc soon? @FlatironSchool would love to have you stop by. we love DAS", created_at="12h">...]
+[<Proto::Tweet name="Kevin Curtin", content="@cawebs06 just a tad over my head... You guys are smart :)", created_at="11h">,
+<Proto::Tweet name="Kevin Curtin", content="@garybernhardt awesome, thanks. any plans to be in nyc soon? @FlatironSchool would love to have you stop by. we love DAS", created_at="12h">...]
 ```
 
-OpenStruct
+OpenStruct features:
+
 ```ruby
 tweet = tweets.first
 #=> #<Proto::Tweet name="Kevin Curtin", content="@cawebs06 just a tad over my head... You guys are smart :)", created_at="11h">
