@@ -16,9 +16,9 @@ module Proto
     def scrape_attribute_data(attributes)
       length_of_scrape = @doc.css(attributes.first[1]).count
 
-      final_array = length_of_scrape.times.map do |i|
-        attributes.inject(Hash.new) do |hash, (k, v)|
-          hash.merge(k => @doc.css(v)[i].text.strip) if doc.css(v)[i]
+      final_array = length_of_scrape.times.map do |index|
+        attributes.inject(Hash.new) do |hash, (attr_name, selector)|
+          hash.merge(attr_name => @doc.css(selector)[index].text.strip) if doc.css(selector)[index]
         end
       end
 
