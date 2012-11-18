@@ -11,6 +11,7 @@ module Proto
       protos     = create_return_objects(name, attributes)
       return protos
     end
+    alias_method :fetch_and_create!, :fetch
 
   private
     def scrape_attribute_data(attributes)
