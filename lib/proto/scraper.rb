@@ -6,7 +6,7 @@ module Proto
       @doc = Nokogiri::HTML(open(url))
     end
 
-    def fetch_and_create!(name='Type', args)
+    def fetch(name='Type', args)
       attributes = scrape_attribute_data(args)
       protos     = create_return_objects(name, attributes)
       return protos

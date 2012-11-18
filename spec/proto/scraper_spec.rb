@@ -10,7 +10,7 @@ describe Proto::Scraper do
 
   it 'returns my objects!' do
     obj = Proto::Scraper.new('https://twitter.com/kcurtin')
-    obj_collection = obj.fetch_and_create!('Tweet', { :name => 'strong.fullname',
+    obj_collection = obj.fetch('Tweet', { :name => 'strong.fullname',
                                             :content => 'p.js-tweet-text', :created_at => 'small.time' })
     # obj_collection.length.should == 10
     obj_collection.first.class.to_s.should == 'Proto::Tweet'
@@ -22,19 +22,19 @@ describe Proto::Scraper do
       Proto::Scraper.new('blah_url')
     }.to raise_error(Errno::ENOENT)
   end
-  # context ".fetch_and_create!" do
+  # context ".fetch" do
   #   it "the default class name is 'Proto::Type'" do
-  #     our_obj = @scrape.fetch_and_create!({})
+  #     our_obj = @scrape.fetch({})
   #     our_obj.class.to_s.should == 'Proto::Type'
   #   end
 
   #   it "accepts only a hash and sets default class name" do
-  #     our_obj = @scrape.fetch_and_create!({:name => 'default const'})
+  #     our_obj = @scrape.fetch({:name => 'default const'})
   #     our_obj.class.to_s.should == 'Proto::Type'
   #   end
 
   #   it "returns a Proto object with attributes set" do
-  #     our_obj = @scrape.fetch_and_create!('Sample', {:name => "Kevin", :title => "Developer"})
+  #     our_obj = @scrape.fetch('Sample', {:name => "Kevin", :title => "Developer"})
   #     our_obj.name.should == "STUBBED OUT"
   #     our_obj.title.should == "STUBBED OUT"
   #     our_obj.class.to_s.should == "Proto::Sample"
