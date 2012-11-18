@@ -28,7 +28,7 @@ tweets = proto.fetch('Tweet', {:name => 'strong.fullname',
 ```
 The string you pass in as a constant name will become the class name of the objects you get back. They will be namespaced, so passing in 'Tweet' returns objects of the class ```Proto::Tweet```. If you fail to pass in a constant, your return objects will be of class ```Proto::Type```.
 
-The keys correspond with the getter/setter methods that will be available on the object you get back and should describe the data you want. The values you pass in are CSS selectors that you need to provide to tell Proto where the data you want lives in the DOM of the page you are scraping. Proto depends on Nokogiri and supports the same CSS selectors.
+The keys correspond with the getter/setter methods that will be available on the object you get back and should describe the data you want. The values you pass in are CSS selectors that you need to provide to tell Proto where the data you want lives in the DOM of the page you are scraping. Proto depends on Nokogiri and supports the same CSS selectors. Currently, Proto calls ```.text``` on any elements you are scraping for and always returns Strings.
 
 ```.fetch``` returns an array of objects that contain your data:
 ```ruby 
