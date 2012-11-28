@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/kcurtin/proto"
 
   gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'minitest'
   gem.add_runtime_dependency 'nokogiri'
 
   gem.files         = `git ls-files`.split($/)

@@ -1,15 +1,23 @@
 module Proto
   class Scraper
-    attr_accessor :doc
+    attr_accessor :doc, :url_collection
 
     def initialize(url)
       @doc = Nokogiri::HTML(open(url))
     end
 
+    def collect_urls(selector)
+      @url_collection = doc.css(selector).map(&:link['href'])
+    end
+
     def fetch(name='Type', args)
-      attributes = scrape_attribute_data(args)
-      protos     = create_return_objects(name, attributes)
-      return protos
+      if url_collection
+        visit_urls_and_fetch(args)
+      else
+        attributes = scrape_attribute_data(args)
+        protos     = create_return_objects(name, attributes)
+        return protos
+      end
     end
     alias_method :fetch_and_create!, :fetch
 
@@ -24,6 +32,16 @@ module Proto
       end
 
       final_array.compact
+    end
+
+    def visit_urls_and_fetch(attributes)
+      url_collection.each do |url|
+        page  = Nokogiri::HTML(open(url))
+
+        hash = attributes.each_with_object({}) do |(key, selector), attrs|
+          attrs[var_name] = page.css(selector).text.strip
+        end
+      end
     end
 
     def create_return_objects(name, attributes)
