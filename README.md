@@ -20,7 +20,7 @@ proto.inspect
 #=> #<Proto::Scraper:0x007fc6fb852860 @doc=#<Nokogiri::HTML::Document:0x3fe37d0b1634...>
 ```
 
-Currently, the API is strict. There is a single public method you can call. This method accepts a constant name and a hash as arguments:
+```.fetch``` method accepts a constant name and a hash as arguments:
 ```ruby
 tweets = proto.fetch('Tweet', {:name => 'strong.fullname', 
                                :content => 'p.js-tweet-text', 
@@ -36,7 +36,7 @@ tweets.inspect
 #=> [#<Proto::Tweet name="Kevin Curtin", content="@cawebs06 just a tad over my head... You guys are smart :)", created_at="11h">,
      #<Proto::Tweet name="Kevin Curtin", content="@garybernhardt awesome, thanks. any plans to be in nyc soon? @FlatironSchool would love to have you stop by. we love DAS", created_at="12h">...]
 ```
-####Scraping based on an index
+####Scraping multiple pages using an index page
 
 ```ruby
 #index page url
