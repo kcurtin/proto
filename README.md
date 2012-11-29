@@ -8,7 +8,7 @@ Proto is meant to be lightweight and flexible, the objects you get back inherit 
 
 ## Usage
 
-Create a new Scraper object with the URL you want to scrape data from
+####Scraping a single page
 
 ```ruby
 proto = Proto::Scraper.new('http://twitter.com/kcurtin')
@@ -35,6 +35,21 @@ The keys correspond with the getter/setter methods that will be available on the
 tweets.inspect
 #=> [#<Proto::Tweet name="Kevin Curtin", content="@cawebs06 just a tad over my head... You guys are smart :)", created_at="11h">,
      #<Proto::Tweet name="Kevin Curtin", content="@garybernhardt awesome, thanks. any plans to be in nyc soon? @FlatironSchool would love to have you stop by. we love DAS", created_at="12h">...]
+```
+####Scraping based on an index
+
+```ruby
+#index page url
+obj = Proto::Scraper.new('http://jobs.rubynow.com/')
+#selector for the a tags with the links you want to visit
+obj.collect_urls('ul.jobs li h2 a:first')
+#attributes and selectors you want
+jobs = obj.fetch( { :title => 'h2#headline',
+                    :company => 'h2#headline a',
+                    :location => 'h3#location',
+                    :type => 'strong:last',
+                    :description => 'div#info' }
+                )
 ```
 
 OpenStruct features:
