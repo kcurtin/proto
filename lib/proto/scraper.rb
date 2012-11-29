@@ -27,24 +27,24 @@ module Proto
   private
 
     def scrape_multiple_pages(attributes)
-      url_collection.each_with_object([]) do |url, hash_array|
-        page  = Nokogiri::HTML(open(url))
-        hash_array << gather_data(page, attributes)
+      url_collection.each_with_object([]).map do |url, hash_array|
+         gather_data(url, attributes)
       end
     end
     
-    def gather_data(page, attributes)
+    def gather_data(url, attributes)
+      page = Nokogiri::HTML(open(url))
       attributes.each_with_object({}) do |(key, selector), attrs|
         attrs[key] = page.css(selector).text.strip
       end
     end
 
-    def scrape_single_page(document=self.doc, attributes)
-      length_of_scrape = document.css(attributes.first[1]).count
+    def scrape_single_page(attributes)
+      length_of_scrape = doc.css(attributes.first[1]).count
       
       length_of_scrape.times.map do |index|
         attributes.inject({}) do |hash, (attr_name, selector)|
-          hash.merge(attr_name => document.css(selector)[index].text.strip) if document.css(selector)[index]
+          hash.merge(attr_name => doc.css(selector)[index].text.strip) if doc.css(selector)[index]
         end
       end.compact
     end
