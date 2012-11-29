@@ -3,7 +3,7 @@ module Proto
     attr_accessor :url, :doc, :url_collection
 
     def initialize(url)
-      @url = url.chomp '/'
+      @url = url.chomp '/' #remove trailing slash
       @doc = Nokogiri::HTML(open(url))
     end
 
@@ -15,20 +15,18 @@ module Proto
 
     def fetch(name='Type', args)
       if url_collection
-        attributes = visit_urls_and_fetch(args)
-        protos     = create_return_objects(name, attributes)
-        return protos        
+        attributes = scrape_multiple_pages(args)
       else
-        attributes = scrape_attribute_data(args)
-        protos     = create_return_objects(name, attributes)
-        return protos
+        attributes = scrape_single_page(args)
       end
+      protos = create_return_objects(name, attributes)
+      return protos
     end
     alias_method :fetch_and_create!, :fetch
 
   private
 
-    def visit_urls_and_fetch(attributes)
+    def scrape_multiple_pages(attributes)
       url_collection.each_with_object([]) do |url, hash_array|
         page  = Nokogiri::HTML(open(url))
         hash_array << gather_data(page, attributes)
@@ -41,11 +39,11 @@ module Proto
       end
     end
 
-    def scrape_attribute_data(document=self.doc, attributes)
+    def scrape_single_page(document=self.doc, attributes)
       length_of_scrape = document.css(attributes.first[1]).count
       
       length_of_scrape.times.map do |index|
-        attributes.inject(Hash.new) do |hash, (attr_name, selector)|
+        attributes.inject({}) do |hash, (attr_name, selector)|
           hash.merge(attr_name => document.css(selector)[index].text.strip) if document.css(selector)[index]
         end
       end.compact
