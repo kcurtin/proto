@@ -15,8 +15,9 @@ module Proto
 
     def fetch(name='Type', args)
       if url_collection
-        puts 'fetching the collection...'
-        visit_urls_and_fetch(args)
+        attributes = visit_urls_and_fetch(args)
+        protos     = create_return_objects(name, attributes)
+        return protos        
       else
         attributes = scrape_attribute_data(args)
         protos     = create_return_objects(name, attributes)
@@ -28,23 +29,24 @@ module Proto
   private
 
     def visit_urls_and_fetch(attributes)
+      hash_array = []
       final_array = url_collection.map do |url|
         page  = Nokogiri::HTML(open(url))
-        attrs_hash = scrape_attribute_data(page, attributes)
+        attrs_hash = gather_data(page, attributes)
+        hash_array << attrs_hash
       end
-      create_return_objects('Bee',final_array)
+      return hash_array
     end
     
-    def gather_data
-      job_hash = args.each_with_object({}) do |(key, selector), attrs|
-        attrs[var_name] = job_doc.css(selector).text.strip
+    def gather_data(page, attributes)
+      job_hash = attributes.each_with_object({}) do |(key, selector), attrs|
+        attrs[key] = page.css(selector).text.strip
       end
-
-      job_hash
     end
 
     def scrape_attribute_data(document=self.doc, attributes)
       length_of_scrape = document.css(attributes.first[1]).count
+      
       final_array = length_of_scrape.times.map do |index|
         attributes.inject(Hash.new) do |hash, (attr_name, selector)|
           hash.merge(attr_name => document.css(selector)[index].text.strip) if document.css(selector)[index]

@@ -26,13 +26,14 @@ describe Proto::Scraper do
   it "should create the objects this way too" do
     obj = Proto::Scraper.new('http://jobs.rubynow.com/')
     obj.collect_urls('ul.jobs li h2 a:first')
-    jobs = obj.fetch({  title:       'h2.jam_headline',
-                        company:     'h3 a.jam_link',
-                        location:    'div#c_address',
-                        type:        'div#c_jobtype',
-                        description: 'div#c_job_description' }
+    jobs = obj.fetch({  :title => 'h2#headline',
+                        :company => 'h2#headline a',
+                        :location => 'h3#location',
+                        :type => 'strong:last',
+                        :description => 'div#info' }
                       )
-    jobs.first.should == 'test'
+    jobs.first.class.to_s.should == 'Proto::Type'
+    jobs.first.title.should =~ /Ruby/
   end
 end
 
