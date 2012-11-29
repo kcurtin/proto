@@ -29,17 +29,14 @@ module Proto
   private
 
     def visit_urls_and_fetch(attributes)
-      hash_array = []
-      final_array = url_collection.map do |url|
+      url_collection.each_with_object([]) do |url, hash_array|
         page  = Nokogiri::HTML(open(url))
-        attrs_hash = gather_data(page, attributes)
-        hash_array << attrs_hash
+        hash_array << gather_data(page, attributes)
       end
-      return hash_array
     end
     
     def gather_data(page, attributes)
-      job_hash = attributes.each_with_object({}) do |(key, selector), attrs|
+      attributes.each_with_object({}) do |(key, selector), attrs|
         attrs[key] = page.css(selector).text.strip
       end
     end
@@ -47,13 +44,11 @@ module Proto
     def scrape_attribute_data(document=self.doc, attributes)
       length_of_scrape = document.css(attributes.first[1]).count
       
-      final_array = length_of_scrape.times.map do |index|
+      length_of_scrape.times.map do |index|
         attributes.inject(Hash.new) do |hash, (attr_name, selector)|
           hash.merge(attr_name => document.css(selector)[index].text.strip) if document.css(selector)[index]
         end
-      end
-
-      final_array.compact
+      end.compact
     end
 
     def create_return_objects(name, attributes)
