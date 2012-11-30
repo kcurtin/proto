@@ -27,7 +27,7 @@ module Proto
   private
 
     def scrape_multiple_pages(attributes)
-      url_collection.each_with_object([]).map do |url, hash_array|
+      url_collection.map do |url, hash_array|
          gather_data(url, attributes)
       end
     end
