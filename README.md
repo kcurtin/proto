@@ -6,7 +6,7 @@ It is the evolution of [another project](https://github.com/kcurtin/scrape_sourc
 
 Proto is meant to be lightweight and flexible, the objects you get back inherit from OpenStruct.  New methods can be dynamically added to the objects, you won't ever get method_missing errors, and you can access the data in a bunch of different ways. Check out the documentation for more info: [OpenStruct](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html)
 
-## Usage
+## Usage 
 
 ####Scraping a single page
 
