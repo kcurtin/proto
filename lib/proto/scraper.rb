@@ -7,9 +7,9 @@ module Proto
       @doc = Nokogiri::HTML(open(url))
     end
 
-    def collect_urls(selector)
+    def collect_urls(base_url=self.url, selector)
       @url_collection = doc.css(selector).map do |link|
-        "#{url}#{link['href']}"
+        "#{base_url}#{link['href']}"
       end
     end
 
