@@ -1,23 +1,39 @@
 module Proto
   class Scraper
-    attr_accessor :url, :doc, :url_collection
+    attr_accessor :url, :doc, :url_collection, :traverse, :page_count
 
     def initialize(url)
       @url = url.chomp '/' #remove trailing slash
       @doc = Nokogiri::HTML(open(url))
+      @page_count     = 1
+      @url_collection = []
     end
 
-    def collect_urls(base_url=self.url, selector)
-      @url_collection = doc.css(selector).map do |link|
+    def collect_urls(base_url=self.url, pagination_selector=nil, url_selector)
+      number_of_pages = doc.css(pagination_selector).map.count if pagination_selector
+
+      page_urls = doc.css(url_selector).map do |link|
         "#{base_url}#{link['href']}"
+      end
+
+      if pagination_selector && (@page_count < number_of_pages)
+        next_url = base_url + doc.css(pagination_selector)[page_count]['href']
+        doc = Nokogiri::HTML(open(next_url))
+        @page_count += 1
+
+        url_collection << page_urls
+        collect_urls(base_url, pagination_selector, url_selector)
+      else
+        url_collection << page_urls
+        url_collection.flatten!
       end
     end
 
     def fetch(name='Type', args)
-      if url_collection
-        attributes = scrape_multiple_pages(args)
-      else
+      if url_collection.empty?
         attributes = scrape_single_page(args)
+      else
+        attributes = scrape_multiple_pages(args)
       end
       protos = create_return_objects(name, attributes)
       return protos

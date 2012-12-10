@@ -35,15 +35,11 @@ describe Proto::Scraper do
     jobs.first.class.to_s.should == 'Proto::Type'
     jobs.first.title.should =~ /Ruby/
   end
-end
 
-# ruby_inside = Scraper.new('Ruby Inside', 'http://ruby.jobamatic.com/a/jbb/find-jobs/', 
-#                           'http://ruby.jobamatic.com', job_database)
-# ruby_inside.compile_job_url_collection('tr.listing td.title a')
-# ruby_inside.scrape_away({
-#   title_text:       'h2.jam_headline',
-#   # company_text:     'h3 a.jam_link',
-#   location_text:    'div#c_address',
-#   type_text:         'div#c_jobtype',
-#   description_text: 'div#c_job_description'
-# })
+  it "should work with pagination" do
+    obj = Proto::Scraper.new('http://www.mediauk.com/radio/starting-with/a')
+    obj.collect_urls('http://www.mediauk.com', 'div.pages a', 'div.columns a')
+    puts obj.url_collection.inspect
+    obj.url_collection.length.should == 10
+  end
+end
