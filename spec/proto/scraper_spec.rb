@@ -4,7 +4,7 @@ describe Proto::Scraper do
   it 'returns my objects!' do
     obj = Proto::Scraper.new('https://twitter.com/kcurtin')
     obj_collection = obj.fetch('Tweet', { :name => 'strong.fullname',
-                                          :content => 'p.js-tweet-text', 
+                                          :content => 'p.js-tweet-text',
                                           :created_at => 'small.time' }
                               )
     obj_collection.first.class.to_s.should == 'Proto::Tweet'

@@ -17,8 +17,8 @@ module Proto
       end
 
       if pagination_selector && (@page_count < number_of_pages)
-        next_url = base_url + doc.css(pagination_selector)[page_count]['href']
-        doc = Nokogiri::HTML(open(next_url))
+        next_url = base_url + doc.css(pagination_selector)[@page_count]['href']
+        self.doc = Nokogiri::HTML(open(next_url))
         @page_count += 1
 
         url_collection << page_urls
@@ -47,7 +47,7 @@ module Proto
          gather_data(url, attributes)
       end
     end
-    
+
     def gather_data(url, attributes)
       page = Nokogiri::HTML(open(url))
       attributes.each_with_object({}) do |(key, selector), attrs|
@@ -57,7 +57,7 @@ module Proto
 
     def scrape_single_page(attributes)
       length_of_scrape = doc.css(attributes.first[1]).count
-      
+
       length_of_scrape.times.map do |index|
         attributes.inject({}) do |hash, (attr_name, selector)|
           hash.merge(attr_name => doc.css(selector)[index].text.strip) if doc.css(selector)[index]
