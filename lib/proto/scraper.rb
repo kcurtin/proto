@@ -12,15 +12,12 @@ module Proto
     def collect_urls(base_url=self.url, pagination_selector=nil, url_selector)
       number_of_pages = doc.css(pagination_selector).map.count if pagination_selector
 
-      page_urls = doc.css(url_selector).map do |link|
-        "#{base_url}#{link['href']}"
-      end
+      page_urls = doc.css(url_selector).map { |link| "#{base_url}#{link['href']}" }
 
       if pagination_selector && (@page_count < number_of_pages)
-        next_url = base_url + doc.css(pagination_selector)[@page_count]['href']
+        next_url = base_url << doc.css(pagination_selector)[@page_count]['href']
         self.doc = Nokogiri::HTML(open(next_url))
         @page_count += 1
-
         url_collection << page_urls
         collect_urls(base_url, pagination_selector, url_selector)
       else
@@ -36,11 +33,11 @@ module Proto
         attributes = scrape_multiple_pages(args)
       end
       protos = create_return_objects(name, attributes)
-      return protos
+      protos
     end
     alias_method :fetch_and_create!, :fetch
 
-  private
+    private
 
     def scrape_multiple_pages(attributes)
       url_collection.map do |url|

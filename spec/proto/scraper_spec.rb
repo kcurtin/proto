@@ -39,7 +39,6 @@ describe Proto::Scraper do
   it "should work with pagination" do
     obj = Proto::Scraper.new('http://www.mediauk.com/radio/starting-with/a')
     obj.collect_urls('http://www.mediauk.com', 'div.pages a', 'div.columns a')
-    puts obj.url_collection.inspect
-    obj.url_collection.length.should == 10
+    obj.url_collection.length.should > 10
   end
 end
